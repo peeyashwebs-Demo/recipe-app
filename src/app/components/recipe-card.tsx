@@ -53,31 +53,31 @@ export function RecipeCard({ recipe, index = 0 }: { recipe: Recipe; index?: numb
           >
             <Bookmark className={`size-4 ${saved ? "fill-current" : ""}`} />
           </button>
-          <span className="absolute top-3 left-3 rounded-full bg-white/85 backdrop-blur-md px-2.5 py-1 text-foreground" style={{ fontSize: "0.68rem", letterSpacing: "0.03em" }}>
+          <span className="absolute top-3 left-3 rounded-full bg-white/85 backdrop-blur-md px-2.5 py-1 text-foreground text-xs" style={{ letterSpacing: "0.03em" }}>
             {recipe.cuisine}
           </span>
         </div>
 
         <div className="p-4">
-          <div className="flex items-center gap-2 text-muted-foreground" style={{ fontSize: "0.72rem" }}>
+          <div className="flex items-center gap-2 text-muted-foreground text-xs" >
             <span className="font-mono-num inline-flex items-center gap-1"><Clock className="size-3.5" /> {total}m</span>
             <span className="opacity-40">·</span>
             <span className="inline-flex items-center gap-1"><Flame className="size-3.5" /> {recipe.difficulty}</span>
           </div>
-          <h3 className="font-display mt-1.5 leading-tight" style={{ fontSize: "1.15rem" }}>
+          <h3 className="font-display mt-1.5 leading-tight text-lg" >
             {recipe.title}
           </h3>
-          <p className="text-muted-foreground mt-1.5 line-clamp-2" style={{ fontSize: "0.85rem" }}>
+          <p className="text-muted-foreground mt-1.5 line-clamp-2 text-sm" >
             {recipe.description}
           </p>
           <div className="flex items-center justify-between mt-3 pt-3 border-t border-border">
             <div className="flex items-center gap-2 min-w-0">
               <img src={creator?.avatar} alt={creator?.name} className="size-6 rounded-full object-cover" />
-              <span className="text-muted-foreground truncate" style={{ fontSize: "0.78rem" }}>{creator?.name}</span>
+              <span className="text-muted-foreground truncate text-xs" >{creator?.name}</span>
             </div>
             <div className="flex items-center gap-1 shrink-0">
               <Stars value={rating.average} size={13} />
-              <span className="text-muted-foreground font-mono-num" style={{ fontSize: "0.72rem" }}>
+              <span className="text-muted-foreground font-mono-num text-xs" >
                 {rating.count ? rating.average.toFixed(1) : "new"}
               </span>
             </div>

@@ -88,7 +88,7 @@ export function ExplorePage() {
         </div>
       </div>
 
-      <p className="text-muted-foreground mt-5" style={{ fontSize: "0.85rem" }}>
+      <p className="text-muted-foreground mt-5 text-sm" >
         {loading ? "Searching…" : `${results.length} recipe${results.length === 1 ? "" : "s"}`}
       </p>
 
@@ -99,7 +99,7 @@ export function ExplorePage() {
           results.map((r, i) => <RecipeCard key={r.id} recipe={r} index={i} />)
         ) : (
           <div className="col-span-full text-center py-20">
-            <p className="font-display" style={{ fontSize: "1.5rem" }}>No recipes match that.</p>
+            <p className="font-display text-2xl" >No recipes match that.</p>
             <p className="text-muted-foreground mt-1">Try a different search or clear your filters.</p>
           </div>
         )}

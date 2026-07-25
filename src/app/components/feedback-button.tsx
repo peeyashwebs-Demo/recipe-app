@@ -62,8 +62,8 @@ export function FeedbackButton() {
             transition={{ ease: [0.22, 1, 0.36, 1], duration: 0.35 }}
             className="fixed bottom-24 right-5 z-40 w-[min(92vw,360px)] rounded-2xl bg-card border border-border shadow-[0_24px_60px_-20px_rgba(74,60,48,0.5)] p-5"
           >
-            <h3 className="font-display" style={{ fontSize: "1.25rem" }}>Enjoying Larder?</h3>
-            <p className="text-muted-foreground mt-1" style={{ fontSize: "0.85rem" }}>
+            <h3 className="font-display text-xl" >Enjoying Larder?</h3>
+            <p className="text-muted-foreground mt-1 text-sm" >
               Tell us what's working — and what isn't.
             </p>
             <div className="mt-4">

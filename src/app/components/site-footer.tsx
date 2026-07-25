@@ -10,9 +10,9 @@ export function SiteFooter() {
             <span className="grid place-items-center size-9 rounded-full bg-primary text-primary-foreground">
               <ChefHat className="size-5" />
             </span>
-            <span className="font-display" style={{ fontSize: "1.35rem" }}>Larder</span>
+            <span className="font-display text-xl" >Larder</span>
           </Link>
-          <p className="text-muted-foreground mt-4 max-w-xs" style={{ fontSize: "0.88rem" }}>
+          <p className="text-muted-foreground mt-4 max-w-xs text-sm" >
             A warm corner of the internet where cooks share the recipes they actually make — and home cooks find their next favourite.
           </p>
         </div>
@@ -22,11 +22,11 @@ export function SiteFooter() {
           { title: "Company", links: ["About", "Journal", "Careers", "Contact"] },
         ].map((col) => (
           <div key={col.title}>
-            <h4 className="font-display" style={{ fontSize: "0.95rem" }}>{col.title}</h4>
+            <h4 className="font-display text-base" >{col.title}</h4>
             <ul className="mt-3 space-y-2">
               {col.links.map((l) => (
                 <li key={l}>
-                  <a className="text-muted-foreground hover:text-foreground transition-colors" style={{ fontSize: "0.85rem" }} href="#">{l}</a>
+                  <a className="text-muted-foreground hover:text-foreground transition-colors text-sm" href="#">{l}</a>
                 </li>
               ))}
             </ul>
@@ -34,7 +34,7 @@ export function SiteFooter() {
         ))}
       </div>
       <div className="border-t border-border">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-muted-foreground" style={{ fontSize: "0.8rem" }}>
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-muted-foreground text-xs" >
           <span>© {new Date().getFullYear()} Larder. Made for people who love to cook.</span>
           <div className="flex gap-5">
             <a href="#" className="hover:text-foreground">Privacy</a>

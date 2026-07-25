@@ -81,14 +81,14 @@ export function AuthUIProvider({ children }: { children: ReactNode }) {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/40" />
             <div className="relative h-full flex flex-col justify-between p-8 text-white">
-              <div className="flex items-center gap-2 font-display" style={{ fontSize: "1.25rem" }}>
+              <div className="flex items-center gap-2 font-display text-xl" >
                 <ChefHat className="size-6" /> Larder
               </div>
               <div>
-                <p className="font-display" style={{ fontSize: "1.9rem", lineHeight: 1.15 }}>
+                <p className="font-display text-3xl" style={{ lineHeight: 1.15 }}>
                   Cook from the recipes people actually make.
                 </p>
-                <p className="mt-3 text-white/80" style={{ fontSize: "0.9rem" }}>
+                <p className="mt-3 text-white/80 text-sm" >
                   Save, scale and review — join a table of home cooks.
                 </p>
               </div>
@@ -97,14 +97,14 @@ export function AuthUIProvider({ children }: { children: ReactNode }) {
 
           {/* Form panel */}
           <div className="p-7 sm:p-9">
-            <div className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 text-primary px-3 py-1 mb-4" style={{ fontSize: "0.7rem", letterSpacing: "0.04em" }}>
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 text-primary px-3 py-1 mb-4 text-xs" style={{ letterSpacing: "0.04em" }}>
               <Sparkles className="size-3.5" /> {mode === "signin" ? "WELCOME BACK" : "JOIN LARDER"}
             </div>
-            <h2 className="font-display" style={{ fontSize: "1.6rem", lineHeight: 1.2 }}>
+            <h2 className="font-display text-2xl" style={{ lineHeight: 1.2 }}>
               {mode === "signin" ? "Sign in to keep cooking" : "Create your free account"}
             </h2>
             {reason && (
-              <p className="text-muted-foreground mt-2" style={{ fontSize: "0.875rem" }}>
+              <p className="text-muted-foreground mt-2 text-sm" >
                 {reason}
               </p>
             )}
@@ -132,13 +132,13 @@ export function AuthUIProvider({ children }: { children: ReactNode }) {
                 <Label htmlFor="au-pass">Password</Label>
                 <Input id="au-pass" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" onKeyDown={(e) => e.key === "Enter" && submit()} />
               </div>
-              {error && <p className="text-destructive" style={{ fontSize: "0.85rem" }}>{error}</p>}
+              {error && <p className="text-destructive text-sm" >{error}</p>}
 
               <Button className="w-full h-11 rounded-full" onClick={submit} disabled={busy}>
                 {busy ? "One moment…" : mode === "signin" ? "Sign in" : "Create account"}
               </Button>
 
-              <p className="text-center text-muted-foreground" style={{ fontSize: "0.85rem" }}>
+              <p className="text-center text-muted-foreground text-sm" >
                 {mode === "signin" ? "New to Larder? " : "Already have an account? "}
                 <button
                   className="text-primary hover:underline"
@@ -147,7 +147,7 @@ export function AuthUIProvider({ children }: { children: ReactNode }) {
                   {mode === "signin" ? "Create one" : "Sign in"}
                 </button>
               </p>
-              <p className="text-center text-muted-foreground/70" style={{ fontSize: "0.72rem" }}>
+              <p className="text-center text-muted-foreground/70 text-xs" >
                 Demo accounts: amara@table.co, leo@table.co, or curators@table.co (password: larderdemo).
               </p>
             </div>

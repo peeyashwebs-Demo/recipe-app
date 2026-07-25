@@ -8,23 +8,42 @@ import { useStore } from "../store";
 import { useAuthUI } from "../components/auth-ui";
 import { categories, img } from "../data/seed";
 import { toast } from "sonner";
+import { Shimmer } from "../components/primitives";
 
 export function AdminPage() {
   const store = useStore();
   const { openAuth } = useAuthUI();
 
-  if (!store.ready) return <div className="min-h-[50vh]" />;
+  if (!store.ready) {
+    return (
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 pt-10">
+        <div className="flex items-center gap-3">
+          <Shimmer className="size-11 rounded-full" />
+          <div>
+            <Shimmer className="h-8 w-48" />
+            <Shimmer className="h-4 w-56 mt-2" />
+          </div>
+        </div>
+        <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-3">
+          {Array.from({ length: 4 }).map((_, i) => <Shimmer key={i} className="h-20 rounded-2xl" />)}
+        </div>
+        <div className="mt-8 space-y-3">
+          {Array.from({ length: 4 }).map((_, i) => <Shimmer key={i} className="h-16 rounded-2xl" />)}
+        </div>
+      </div>
+    );
+  }
 
   if (!store.currentUser || store.currentUser.role !== "admin") {
     return (
       <div className="mx-auto max-w-2xl px-4 py-28 text-center">
         <div className="grid place-items-center size-16 rounded-full bg-primary/10 text-primary mx-auto"><Shield className="size-7" /></div>
-        <h1 className="font-display mt-6" style={{ fontSize: "2.2rem" }}>Curation desk</h1>
+        <h1 className="font-display mt-6 text-4xl" >Curation desk</h1>
         <p className="text-muted-foreground mt-2">This area is for the editorial team.</p>
         {!store.currentUser
           ? <Button className="rounded-full mt-6" onClick={() => openAuth("signin", "Sign in as curators@table.co to access curation.")}>Sign in as curator</Button>
           : <Button asChild variant="outline" className="rounded-full mt-6"><Link to="/">Back home</Link></Button>}
-        <p className="text-muted-foreground mt-4" style={{ fontSize: "0.78rem" }}>Demo: sign in with curators@table.co (any password).</p>
+        <p className="text-muted-foreground mt-4 text-xs" >Demo: sign in with curators@table.co (any password).</p>
       </div>
     );
   }
@@ -46,7 +65,7 @@ export function AdminPage() {
         <span className="grid place-items-center size-11 rounded-full bg-primary/10 text-primary"><Shield className="size-5" /></span>
         <div>
           <h1 className="font-display" style={{ fontSize: "clamp(1.8rem,4vw,2.6rem)" }}>Curation desk</h1>
-          <p className="text-muted-foreground" style={{ fontSize: "0.9rem" }}>Feature the best, moderate the rest.</p>
+          <p className="text-muted-foreground text-sm" >Feature the best, moderate the rest.</p>
         </div>
       </div>
 
@@ -54,8 +73,8 @@ export function AdminPage() {
         {stats.map((s) => (
           <div key={s.label} className="rounded-2xl border border-border bg-card p-4">
             <s.icon className="size-5 text-primary" />
-            <div className="font-display mt-2" style={{ fontSize: "1.8rem" }}>{s.value}</div>
-            <div className="text-muted-foreground" style={{ fontSize: "0.8rem" }}>{s.label}</div>
+            <div className="font-display mt-2 text-3xl" >{s.value}</div>
+            <div className="text-muted-foreground text-xs" >{s.label}</div>
           </div>
         ))}
       </div>
@@ -75,8 +94,8 @@ export function AdminPage() {
             <div key={r.id} className="flex items-center gap-4 rounded-2xl border border-border bg-card p-3">
               <ImageWithFallback src={img(r.image, 160, 160)} alt={r.title} className="size-16 rounded-xl object-cover shrink-0" />
               <div className="min-w-0 flex-1">
-                <Link to={`/recipe/${r.id}`} className="font-display hover:text-primary" style={{ fontSize: "1.05rem" }}>{r.title}</Link>
-                <div className="text-muted-foreground truncate" style={{ fontSize: "0.8rem" }}>by {store.userById(r.creatorId)?.name} · {r.cuisine}</div>
+                <Link to={`/recipe/${r.id}`} className="font-display hover:text-primary text-base" >{r.title}</Link>
+                <div className="text-muted-foreground truncate text-xs" >by {store.userById(r.creatorId)?.name} · {r.cuisine}</div>
               </div>
               <Button variant="outline" className="rounded-full" onClick={() => { store.setRecipeStatus(r.id, "draft"); toast("Sent back to draft"); }}>Reject</Button>
               <Button className="rounded-full" onClick={() => { store.setRecipeStatus(r.id, "published"); toast.success("Recipe published"); }}><Check className="size-4" /> Approve</Button>
@@ -90,8 +109,8 @@ export function AdminPage() {
             <div key={r.id} className="flex items-center gap-3 rounded-2xl border border-border bg-card p-3">
               <ImageWithFallback src={img(r.image, 120, 120)} alt={r.title} className="size-14 rounded-xl object-cover shrink-0" />
               <div className="min-w-0 flex-1">
-                <div className="font-display truncate" style={{ fontSize: "1rem" }}>{r.title}</div>
-                <div className="text-muted-foreground" style={{ fontSize: "0.75rem" }}>{store.ratingFor(r.id).average.toFixed(1)} ★ · {store.ratingFor(r.id).count} reviews</div>
+                <div className="font-display truncate text-base" >{r.title}</div>
+                <div className="text-muted-foreground text-xs" >{store.ratingFor(r.id).average.toFixed(1)} ★ · {store.ratingFor(r.id).count} reviews</div>
               </div>
               <Button
                 variant={r.featured ? "default" : "outline"}
@@ -114,14 +133,14 @@ export function AdminPage() {
                 <div className="flex items-center gap-3">
                   <img src={rv.userAvatar} alt={rv.userName} className="size-8 rounded-full object-cover" />
                   <div className="min-w-0">
-                    <div style={{ fontSize: "0.88rem" }}>{rv.userName} <span className="text-muted-foreground">on</span> {recipe?.title}</div>
-                    <div className="text-muted-foreground" style={{ fontSize: "0.72rem" }}>{rv.rating} ★ · {rv.createdAt}</div>
+                    <div className="text-sm" >{rv.userName} <span className="text-muted-foreground">on</span> {recipe?.title}</div>
+                    <div className="text-muted-foreground text-xs" >{rv.rating} ★ · {rv.createdAt}</div>
                   </div>
                   <Button variant="ghost" size="sm" className="rounded-full ml-auto" onClick={() => { store.toggleReviewHidden(rv.recipeId, rv.id); toast(rv.hidden ? "Review restored" : "Review hidden"); }}>
                     {rv.hidden ? <><Eye className="size-4" /> Restore</> : <><EyeOff className="size-4" /> Hide</>}
                   </Button>
                 </div>
-                {rv.comment && <p className="mt-2 text-foreground/90" style={{ fontSize: "0.9rem" }}>{rv.comment}</p>}
+                {rv.comment && <p className="mt-2 text-foreground/90 text-sm" >{rv.comment}</p>}
               </div>
             );
           })}
@@ -136,10 +155,10 @@ export function AdminPage() {
                 <div className="relative h-24">
                   <ImageWithFallback src={img(c.image, 400, 200)} alt={c.name} className="h-full w-full object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  <div className="absolute bottom-2 left-3 text-white font-display" style={{ fontSize: "1.1rem" }}>{c.name}</div>
+                  <div className="absolute bottom-2 left-3 text-white font-display text-lg" >{c.name}</div>
                 </div>
                 <div className="p-3 flex items-center justify-between">
-                  <span className="text-muted-foreground" style={{ fontSize: "0.8rem" }}>{c.blurb}</span>
+                  <span className="text-muted-foreground text-xs" >{c.blurb}</span>
                   <Badge variant="secondary" className="rounded-full">{count}</Badge>
                 </div>
               </div>

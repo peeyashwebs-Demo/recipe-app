@@ -15,6 +15,7 @@ import { useStore } from "../store";
 import { useAuthUI } from "../components/auth-ui";
 import { categories, img, type Ingredient, type Step } from "../data/seed";
 import { toast } from "sonner";
+import { Shimmer } from "../components/primitives";
 
 const heroImages = [
   "1546549032-9571cd6b27df", "1598103442097-8b74394b95c6", "1512621776951-a57141f2eefd",
@@ -38,13 +39,31 @@ export function CreatorPage() {
   const [steps, setSteps] = useState<string[]>([""]);
   const [tags, setTags] = useState("");
 
-  if (!store.ready) return <div className="min-h-[50vh]" />;
+  if (!store.ready) {
+    return (
+      <div className="mx-auto max-w-4xl px-4 sm:px-6 pt-10">
+        <div className="flex items-center gap-3">
+          <Shimmer className="size-11 rounded-full" />
+          <div>
+            <Shimmer className="h-8 w-40" />
+            <Shimmer className="h-4 w-56 mt-2" />
+          </div>
+        </div>
+        <Shimmer className="h-10 w-full mt-8 rounded-full" />
+        <div className="mt-6 space-y-4">
+          <Shimmer className="h-11 w-full rounded-xl" />
+          <Shimmer className="h-24 w-full rounded-xl" />
+          <Shimmer className="h-11 w-full rounded-xl" />
+        </div>
+      </div>
+    );
+  }
 
   if (!store.currentUser) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-28 text-center">
         <div className="grid place-items-center size-16 rounded-full bg-accent/15 text-accent mx-auto"><ChefHat className="size-7" /></div>
-        <h1 className="font-display mt-6" style={{ fontSize: "2.2rem" }}>Share your cooking</h1>
+        <h1 className="font-display mt-6 text-4xl" >Share your cooking</h1>
         <p className="text-muted-foreground mt-2">Sign in to publish recipes and build your following of home cooks.</p>
         <Button className="rounded-full mt-6" onClick={() => openAuth("signup", "Create an account to publish recipes.")}>Get started</Button>
       </div>
@@ -84,7 +103,7 @@ export function CreatorPage() {
         <span className="grid place-items-center size-11 rounded-full bg-accent/15 text-accent"><PenLine className="size-5" /></span>
         <div>
           <h1 className="font-display" style={{ fontSize: "clamp(1.8rem,4vw,2.6rem)" }}>Creator studio</h1>
-          <p className="text-muted-foreground" style={{ fontSize: "0.9rem" }}>Publish structured recipes and manage your collection.</p>
+          <p className="text-muted-foreground text-sm" >Publish structured recipes and manage your collection.</p>
         </div>
       </div>
 
@@ -99,7 +118,7 @@ export function CreatorPage() {
           <div className="grid lg:grid-cols-[1.3fr_1fr] gap-8">
             <div className="space-y-5">
               <div className="space-y-2"><Label>Title</Label><Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Grandma's Sunday Ragù" /></div>
-              <div className="space-y-2"><Label>Description</Label><Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="A short, appetising intro…" className="resize-none min-h-[80px]" /></div>
+              <div className="space-y-2"><Label>Description</Label><Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="A short, appetising intro…" className="resize-none min-h-24" /></div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2"><Label>Category</Label>
@@ -138,8 +157,8 @@ export function CreatorPage() {
                 <Label>Method</Label>
                 {steps.map((s, i) => (
                   <div key={i} className="flex gap-2 items-start">
-                    <span className="grid place-items-center size-8 shrink-0 mt-1 rounded-full bg-primary/10 text-primary font-mono-num" style={{ fontSize: "0.8rem" }}>{i + 1}</span>
-                    <Textarea value={s} onChange={(e) => setSteps((a) => a.map((x, idx) => idx === i ? e.target.value : x))} placeholder="Describe this step…" className="resize-none min-h-[60px]" />
+                    <span className="grid place-items-center size-8 shrink-0 mt-1 rounded-full bg-primary/10 text-primary font-mono-num text-xs" >{i + 1}</span>
+                    <Textarea value={s} onChange={(e) => setSteps((a) => a.map((x, idx) => idx === i ? e.target.value : x))} placeholder="Describe this step…" className="resize-none min-h-16" />
                     <Button variant="ghost" size="icon" className="mt-1" onClick={() => setSteps((a) => a.filter((_, idx) => idx !== i))}><X className="size-4" /></Button>
                   </div>
                 ))}
@@ -166,9 +185,9 @@ export function CreatorPage() {
                   <ImageWithFallback src={img(image, 500, 375)} alt="preview" className="h-full w-full object-cover" />
                 </div>
                 <div className="p-4">
-                  <div className="text-muted-foreground" style={{ fontSize: "0.72rem" }}>{cuisine || "Cuisine"} · {difficulty}</div>
-                  <div className="font-display mt-1" style={{ fontSize: "1.15rem" }}>{title || "Your recipe title"}</div>
-                  <p className="text-muted-foreground mt-1 line-clamp-2" style={{ fontSize: "0.85rem" }}>{description || "Your description will appear here as you type."}</p>
+                  <div className="text-muted-foreground text-xs" >{cuisine || "Cuisine"} · {difficulty}</div>
+                  <div className="font-display mt-1 text-lg" >{title || "Your recipe title"}</div>
+                  <p className="text-muted-foreground mt-1 line-clamp-2 text-sm" >{description || "Your description will appear here as you type."}</p>
                 </div>
               </div>
             </div>
@@ -185,8 +204,8 @@ export function CreatorPage() {
                 <div key={r.id} className="flex items-center gap-4 rounded-2xl border border-border bg-card p-3">
                   <ImageWithFallback src={img(r.image, 160, 160)} alt={r.title} className="size-16 rounded-xl object-cover shrink-0" />
                   <div className="min-w-0 flex-1">
-                    <Link to={`/recipe/${r.id}`} className="font-display hover:text-primary transition-colors" style={{ fontSize: "1.05rem" }}>{r.title}</Link>
-                    <div className="flex items-center gap-2 mt-1 text-muted-foreground" style={{ fontSize: "0.75rem" }}>
+                    <Link to={`/recipe/${r.id}`} className="font-display hover:text-primary transition-colors text-base" >{r.title}</Link>
+                    <div className="flex items-center gap-2 mt-1 text-muted-foreground text-xs" >
                       <span className="font-mono-num inline-flex items-center gap-1"><Clock className="size-3.5" />{r.prepMinutes + r.cookMinutes}m</span>
                       <span>·</span><span>{store.ratingFor(r.id).count} reviews</span>
                     </div>

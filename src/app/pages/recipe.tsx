@@ -71,7 +71,7 @@ export function RecipePage() {
   if (!recipe) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-32 text-center">
-        <h1 className="font-display" style={{ fontSize: "2rem" }}>Recipe not found</h1>
+        <h1 className="font-display text-3xl" >Recipe not found</h1>
         <Button asChild className="rounded-full mt-6"><Link to="/explore">Back to explore</Link></Button>
       </div>
     );
@@ -100,7 +100,7 @@ export function RecipePage() {
   return (
     <div className="pb-10">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 pt-6">
-        <Link to="/explore" className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-foreground" style={{ fontSize: "0.88rem" }}>
+        <Link to="/explore" className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-foreground text-sm" >
           <ArrowLeft className="size-4" /> Back to recipes
         </Link>
       </div>
@@ -113,12 +113,12 @@ export function RecipePage() {
           <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-10 text-white">
             <div className="flex items-center gap-2 flex-wrap">
               <Badge className="bg-primary text-primary-foreground border-none">{recipe.cuisine}</Badge>
-              <span className="text-white/80" style={{ fontSize: "0.8rem" }}>{categories.find((c) => c.id === recipe.category)?.name}</span>
+              <span className="text-white/80 text-xs" >{categories.find((c) => c.id === recipe.category)?.name}</span>
             </div>
             <h1 className="font-display mt-2" style={{ fontSize: "clamp(1.8rem,4.5vw,3.4rem)", lineHeight: 1.05 }}>{recipe.title}</h1>
             <div className="flex items-center gap-3 mt-3">
               <Stars value={rating.average} size={18} />
-              <span className="text-white/90" style={{ fontSize: "0.85rem" }}>
+              <span className="text-white/90 text-sm" >
                 {rating.count ? `${rating.average.toFixed(1)} · ${rating.count} review${rating.count === 1 ? "" : "s"}` : "Be the first to review"}
               </span>
             </div>
@@ -131,8 +131,8 @@ export function RecipePage() {
         <div className="flex items-center gap-3">
           <img src={creator?.avatar} alt={creator?.name} className="size-11 rounded-full object-cover" />
           <div>
-            <div className="text-muted-foreground" style={{ fontSize: "0.72rem" }}>Recipe by</div>
-            <div className="font-display" style={{ fontSize: "1rem" }}>{creator?.name}</div>
+            <div className="text-muted-foreground text-xs" >Recipe by</div>
+            <div className="font-display text-base" >{creator?.name}</div>
           </div>
         </div>
         <Separator orientation="vertical" className="h-10 hidden sm:block" />
@@ -150,7 +150,7 @@ export function RecipePage() {
         </div>
       </div>
 
-      <p className="mx-auto max-w-6xl px-4 sm:px-6 mt-6 text-muted-foreground" style={{ fontSize: "1.05rem", lineHeight: 1.6 }}>{recipe.description}</p>
+      <p className="mx-auto max-w-6xl px-4 sm:px-6 mt-6 text-muted-foreground text-base" style={{ lineHeight: 1.6 }}>{recipe.description}</p>
 
       {/* Body */}
       <div className="mx-auto max-w-6xl px-4 sm:px-6 mt-8 grid lg:grid-cols-[0.9fr_1.3fr] gap-10">
@@ -158,17 +158,17 @@ export function RecipePage() {
         <div>
           <div className="sticky top-20 rounded-2xl border border-border bg-card p-5">
             <div className="flex items-center justify-between">
-              <h2 className="font-display" style={{ fontSize: "1.35rem" }}>Ingredients</h2>
-              <div className="flex items-center gap-1.5 text-muted-foreground" style={{ fontSize: "0.8rem" }}><Users className="size-4" /> serves</div>
+              <h2 className="font-display text-xl" >Ingredients</h2>
+              <div className="flex items-center gap-1.5 text-muted-foreground text-xs" ><Users className="size-4" /> serves</div>
             </div>
             <div className="mt-3 flex items-center gap-3">
               <div className="flex items-center rounded-full border border-border bg-input-background">
                 <button onClick={() => setServings((s) => Math.max(1, s - 1))} className="grid place-items-center size-9 rounded-full hover:bg-secondary" aria-label="Fewer servings"><Minus className="size-4" /></button>
-                <span className="w-10 text-center font-mono-num" style={{ fontSize: "1.1rem" }}>{servings}</span>
+                <span className="w-10 text-center font-mono-num text-lg" >{servings}</span>
                 <button onClick={() => setServings((s) => Math.min(40, s + 1))} className="grid place-items-center size-9 rounded-full hover:bg-secondary" aria-label="More servings"><Plus className="size-4" /></button>
               </div>
               {servings !== recipe.baseServings && (
-                <button onClick={() => setServings(recipe.baseServings)} className="text-primary hover:underline" style={{ fontSize: "0.8rem" }}>
+                <button onClick={() => setServings(recipe.baseServings)} className="text-primary hover:underline text-xs" >
                   reset to {recipe.baseServings}
                 </button>
               )}
@@ -181,9 +181,9 @@ export function RecipePage() {
                   <li key={ing.id}>
                     <button onClick={() => toggleCheck(ing.id)} className="w-full flex items-start gap-3 py-2 text-left group">
                       <span className={`mt-0.5 grid place-items-center size-5 rounded-md border shrink-0 transition-colors ${done ? "bg-primary border-primary text-primary-foreground" : "border-border group-hover:border-primary"}`}>
-                        {done && <span style={{ fontSize: "0.7rem" }}>✓</span>}
+                        {done && <span className="text-xs" >✓</span>}
                       </span>
-                      <span className={`${done ? "line-through text-muted-foreground" : ""}`} style={{ fontSize: "0.95rem" }}>
+                      <span className={`text-base ${done ? "line-through text-muted-foreground" : ""}`}>
                         {ing.quantity !== null && <span className="font-mono-num text-primary">{formatQty(ing.quantity * factor)}</span>}
                         {ing.unit && <span className="text-muted-foreground"> {ing.unit}</span>}{" "}
                         {ing.name}
@@ -198,7 +198,7 @@ export function RecipePage() {
 
         {/* Steps */}
         <div>
-          <h2 className="font-display" style={{ fontSize: "1.35rem" }}>Method</h2>
+          <h2 className="font-display text-xl" >Method</h2>
           <ol className="mt-4 space-y-6">
             {recipe.steps.map((s, i) => (
               <motion.li
@@ -206,8 +206,8 @@ export function RecipePage() {
                 initial={{ opacity: 0, x: 16 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.03 }}
                 className="flex gap-4"
               >
-                <span className="grid place-items-center size-10 shrink-0 rounded-full bg-primary/10 text-primary font-display" style={{ fontSize: "1.1rem" }}>{i + 1}</span>
-                <p className="pt-1.5" style={{ fontSize: "1rem", lineHeight: 1.65 }}>{s.text}</p>
+                <span className="grid place-items-center size-10 shrink-0 rounded-full bg-primary/10 text-primary font-display text-lg" >{i + 1}</span>
+                <p className="pt-1.5 text-base" style={{ lineHeight: 1.65 }}>{s.text}</p>
               </motion.li>
             ))}
           </ol>
@@ -220,15 +220,15 @@ export function RecipePage() {
 
       {/* Reviews */}
       <div className="mx-auto max-w-6xl px-4 sm:px-6 mt-16">
-        <h2 className="font-display" style={{ fontSize: "1.8rem" }}>Reviews</h2>
+        <h2 className="font-display text-3xl" >Reviews</h2>
         <div className="mt-5 rounded-2xl border border-border bg-card p-5">
           <div className="flex items-center justify-between flex-wrap gap-3">
             <div>
-              <div className="text-muted-foreground" style={{ fontSize: "0.85rem" }}>How did it turn out?</div>
+              <div className="text-muted-foreground text-sm" >How did it turn out?</div>
               <Stars value={myRating} size={30} onChange={setMyRating} className="mt-1" />
             </div>
           </div>
-          <Textarea value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Share tips, tweaks, or how it went…" className="mt-4 min-h-[90px] bg-input-background resize-none" />
+          <Textarea value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Share tips, tweaks, or how it went…" className="mt-4 min-h-24 bg-input-background resize-none" />
           <Button className="rounded-full mt-3" onClick={submitReview}>Post review</Button>
         </div>
 
@@ -239,12 +239,12 @@ export function RecipePage() {
               <div className="flex items-center gap-3">
                 <img src={r.userAvatar} alt={r.userName} className="size-9 rounded-full object-cover" />
                 <div>
-                  <div style={{ fontSize: "0.92rem" }}>{r.userName}</div>
-                  <div className="text-muted-foreground" style={{ fontSize: "0.72rem" }}>{r.createdAt}</div>
+                  <div className="text-sm" >{r.userName}</div>
+                  <div className="text-muted-foreground text-xs" >{r.createdAt}</div>
                 </div>
                 <Stars value={r.rating} size={14} className="ml-auto" />
               </div>
-              {r.comment && <p className="mt-3 text-foreground/90" style={{ fontSize: "0.95rem", lineHeight: 1.55 }}>{r.comment}</p>}
+              {r.comment && <p className="mt-3 text-foreground/90 text-base" style={{ lineHeight: 1.55 }}>{r.comment}</p>}
             </div>
           ))}
         </div>
@@ -253,15 +253,15 @@ export function RecipePage() {
       {/* Related */}
       {related.length > 0 && (
         <div className="mx-auto max-w-6xl px-4 sm:px-6 mt-16">
-          <h2 className="font-display mb-5" style={{ fontSize: "1.6rem" }}>More like this</h2>
+          <h2 className="font-display mb-5 text-2xl" >More like this</h2>
           <div className="grid gap-4 sm:grid-cols-3">
             {related.map((r) => (
               <Link key={r.id} to={`/recipe/${r.id}`} className="group flex gap-3 rounded-2xl border border-border bg-card p-3 hover:shadow-lg transition-shadow">
                 <ImageWithFallback src={img(r.image, 200, 200)} alt={r.title} className="size-20 rounded-xl object-cover shrink-0" />
                 <div className="min-w-0">
-                  <div className="text-muted-foreground" style={{ fontSize: "0.7rem" }}>{r.cuisine}</div>
-                  <div className="font-display leading-tight mt-0.5 group-hover:text-primary transition-colors" style={{ fontSize: "1rem" }}>{r.title}</div>
-                  <div className="text-muted-foreground mt-1 font-mono-num" style={{ fontSize: "0.72rem" }}>{r.prepMinutes + r.cookMinutes}m</div>
+                  <div className="text-muted-foreground text-xs" >{r.cuisine}</div>
+                  <div className="font-display leading-tight mt-0.5 group-hover:text-primary transition-colors text-base" >{r.title}</div>
+                  <div className="text-muted-foreground mt-1 font-mono-num text-xs" >{r.prepMinutes + r.cookMinutes}m</div>
                 </div>
               </Link>
             ))}

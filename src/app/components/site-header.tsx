@@ -71,7 +71,7 @@ export function SiteHeader() {
           <span className="grid place-items-center size-9 rounded-full bg-primary text-primary-foreground">
             <ChefHat className="size-5" />
           </span>
-          <span className="font-display" style={{ fontSize: "1.35rem", letterSpacing: "-0.01em" }}>Larder</span>
+          <span className="font-display text-xl" style={{ letterSpacing: "-0.01em" }}>Larder</span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-1 ml-2">
@@ -80,11 +80,10 @@ export function SiteHeader() {
               key={n.to}
               to={n.to}
               className={({ isActive }) =>
-                `px-3 py-2 rounded-full transition-colors ${
+                `text-sm px-3 py-2 rounded-full transition-colors ${
                   isActive ? "text-primary" : "text-foreground/75 hover:text-foreground"
                 }`
               }
-              style={{ fontSize: "0.9rem" }}
             >
               {n.label}
             </NavLink>
@@ -94,12 +93,11 @@ export function SiteHeader() {
         <form onSubmit={submitSearch} className="hidden lg:flex items-center gap-2 ml-auto rounded-full bg-input-background border border-border px-3.5 h-9 w-64 focus-within:ring-2 focus-within:ring-primary/40 transition-shadow">
           <Search className="size-4 text-muted-foreground" />
           <input
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            placeholder="Search recipes, cuisines…"
-            className="bg-transparent outline-none w-full placeholder:text-muted-foreground"
-            style={{ fontSize: "0.85rem" }}
-          />
+ value={q}
+ onChange={(e) => setQ(e.target.value)}
+ placeholder="Search recipes, cuisines…"
+ className="bg-transparent outline-none w-full placeholder:text-muted-foreground text-sm"
+ />
         </form>
 
         <div className="flex items-center gap-2 lg:ml-0 ml-auto">
@@ -108,13 +106,13 @@ export function SiteHeader() {
               <DropdownMenuTrigger asChild>
                 <button className="flex items-center gap-2 rounded-full pl-1 pr-3 h-10 hover:bg-secondary transition-colors">
                   <img src={avatarOverride ?? currentUser.avatar} alt={currentUser.name} className="size-8 rounded-full object-cover" />
-                  <span className="hidden sm:block max-w-[110px] truncate" style={{ fontSize: "0.85rem" }}>{currentUser.name.split(" ")[0]}</span>
+                  <span className="hidden sm:block max-w-24 truncate text-sm" >{currentUser.name.split(" ")[0]}</span>
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
                 <DropdownMenuLabel className="flex flex-col">
                   <span>{currentUser.name}</span>
-                  <span className="text-muted-foreground font-normal" style={{ fontSize: "0.75rem" }}>{currentUser.email}</span>
+                  <span className="text-muted-foreground font-normal text-xs" >{currentUser.email}</span>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => fileInputRef.current?.click()}>
@@ -155,7 +153,7 @@ export function SiteHeader() {
             <div className="px-4 py-4 space-y-1">
               <form onSubmit={submitSearch} className="flex items-center gap-2 rounded-full bg-input-background border border-border px-3.5 h-10 mb-2">
                 <Search className="size-4 text-muted-foreground" />
-                <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search recipes…" className="bg-transparent outline-none w-full" style={{ fontSize: "0.9rem" }} />
+                <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search recipes…" className="bg-transparent outline-none w-full text-sm" />
               </form>
               {nav.map((n) => (
                 <Link key={n.to} to={n.to} onClick={() => setMobileOpen(false)} className="block px-3 py-2.5 rounded-lg hover:bg-secondary">

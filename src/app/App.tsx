@@ -5,7 +5,6 @@ import { AuthUIProvider } from "./components/auth-ui";
 import { SiteHeader } from "./components/site-header";
 import { SiteFooter } from "./components/site-footer";
 import { FeedbackButton } from "./components/feedback-button";
-import { AnnotationTool } from "./components/annotation-tool";
 import { Toaster } from "./components/ui/sonner";
 import { HomePage } from "./pages/home";
 import { ExplorePage } from "./pages/explore";
@@ -30,7 +29,6 @@ function Layout() {
       </main>
       <SiteFooter />
       <FeedbackButton />
-      <AnnotationTool />
     </div>
   );
 }

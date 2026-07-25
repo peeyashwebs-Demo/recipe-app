@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router";
 import { BookMarked, Bookmark, Plus, Lock } from "lucide-react";
 import { RecipeCard } from "../components/recipe-card";
+import { RecipeCardSkeleton, Shimmer } from "../components/primitives";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
@@ -20,13 +21,27 @@ export function CollectionsPage() {
   const [emoji, setEmoji] = useState("🍽️");
   const [open, setOpen] = useState(false);
 
-  if (!store.ready) return <div className="min-h-[50vh]" />;
+  if (!store.ready) {
+    return (
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 pt-10">
+        <Shimmer className="h-9 w-48" />
+        <Shimmer className="h-5 w-64 mt-3" />
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {Array.from({ length: 3 }).map((_, i) => <Shimmer key={i} className="h-32 rounded-2xl" />)}
+        </div>
+        <Shimmer className="h-7 w-40 mt-12" />
+        <div className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {Array.from({ length: 4 }).map((_, i) => <RecipeCardSkeleton key={i} />)}
+        </div>
+      </div>
+    );
+  }
 
   if (!store.currentUser) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-28 text-center">
         <div className="grid place-items-center size-16 rounded-full bg-primary/10 text-primary mx-auto"><Lock className="size-7" /></div>
-        <h1 className="font-display mt-6" style={{ fontSize: "2.2rem" }}>Your recipe box awaits</h1>
+        <h1 className="font-display mt-6 text-4xl" >Your recipe box awaits</h1>
         <p className="text-muted-foreground mt-2">Sign in to save recipes and organise them into collections.</p>
         <Button className="rounded-full mt-6" onClick={() => openAuth("signup", "Create an account to start saving recipes.")}>Sign in or create account</Button>
       </div>
@@ -72,10 +87,10 @@ export function CollectionsPage() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                   <div className="absolute bottom-3 left-4 text-white flex items-center gap-2">
                     <span className="text-xl">{c.emoji}</span>
-                    <span className="font-display" style={{ fontSize: "1.15rem" }}>{c.name}</span>
+                    <span className="font-display text-lg" >{c.name}</span>
                   </div>
                 </div>
-                <div className="p-3 text-muted-foreground" style={{ fontSize: "0.82rem" }}>{c.recipeIds.length} recipe{c.recipeIds.length === 1 ? "" : "s"}</div>
+                <div className="p-3 text-muted-foreground text-sm" >{c.recipeIds.length} recipe{c.recipeIds.length === 1 ? "" : "s"}</div>
               </div>
             );
           })}
@@ -85,7 +100,7 @@ export function CollectionsPage() {
       {/* Saved */}
       <div className="mt-12 flex items-center gap-2">
         <Bookmark className="size-5 text-primary" />
-        <h2 className="font-display" style={{ fontSize: "1.6rem" }}>Saved recipes</h2>
+        <h2 className="font-display text-2xl" >Saved recipes</h2>
       </div>
       {saved.length ? (
         <div className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
