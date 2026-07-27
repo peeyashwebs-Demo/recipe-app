@@ -113,6 +113,17 @@ export function HomePage() {
             </motion.div>
           </div>
 
+          {/* Eyebrow badge — sits in the open space above the photo stack, no overlap */}
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="mx-auto w-fit md:mx-0 md:ml-6 mb-3 flex items-center gap-2 rounded-full bg-primary text-primary-foreground shadow-lg px-3.5 py-2"
+          >
+            <ChefHat className="size-4" />
+            <span className="text-sm" style={{ fontWeight: 500 }}>Real home cooks</span>
+          </motion.div>
+
           {/* Hero visual — main shot with a peeking companion photo and flat (non-tilted) badges, all boxed inside safe padding so nothing ever clips at any width */}
           <div className="relative mx-auto w-full max-w-[420px] sm:max-w-[480px] md:max-w-none px-6 pt-6 pb-8">
             {/* Companion photo, peeking from behind top-left — depth without risking overflow */}
@@ -167,17 +178,6 @@ export function HomePage() {
             >
               <Star className="size-3.5 sm:size-4 text-primary fill-primary" />
               <span className="text-xs sm:text-sm" >4.9 · 2.3k made this</span>
-            </motion.div>
-
-            {/* Floating badge — top left, sits on the companion photo's corner */}
-            <motion.div
-              initial={{ opacity: 0, y: -14, scale: 0.9 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute top-0 left-2 sm:left-1 flex items-center gap-2 rounded-full bg-primary text-primary-foreground shadow-xl px-3.5 py-2"
-            >
-              <ChefHat className="size-4" />
-              <span className="text-sm" style={{ fontWeight: 500 }}>Real home cooks</span>
             </motion.div>
           </div>
         </div>
