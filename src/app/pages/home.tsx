@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { motion, useScroll, useTransform, useSpring } from "motion/react";
+import { motion, useScroll, useTransform, useSpring, useMotionValue } from "motion/react";
 import { ArrowRight, Clock, Sparkles, Star, TrendingUp, Utensils, ChefHat } from "lucide-react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import heroFoodImg from "../../imports/images.jpg";
@@ -24,6 +24,35 @@ export function HomePage() {
   const rotateX = useSpring(rawRotateX, { stiffness: 80, damping: 20 });
   const rotateY = useSpring(rawRotateY, { stiffness: 80, damping: 20 });
   const cardTranslateY = useSpring(rawTranslateY, { stiffness: 80, damping: 20 });
+
+  // Touch/press-driven tilt — the card leans toward wherever you press,
+  // then springs back on release, like handling a physical photo
+  const pressTiltX = useMotionValue(0);
+  const pressTiltY = useMotionValue(0);
+  const springPressTiltX = useSpring(pressTiltX, { stiffness: 260, damping: 18 });
+  const springPressTiltY = useSpring(pressTiltY, { stiffness: 260, damping: 18 });
+  const combinedRotateX = useTransform(
+    [rotateX, springPressTiltX],
+    ([scroll, press]: number[]) => scroll + press
+  );
+  const combinedRotateY = useTransform(
+    [rotateY, springPressTiltY],
+    ([scroll, press]: number[]) => scroll + press
+  );
+
+  const handleCardPress = (e: React.PointerEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width - 0.5; // -0.5..0.5
+    const py = (e.clientY - rect.top) / rect.height - 0.5;
+    const maxTilt = 10;
+    pressTiltY.set(px * maxTilt);
+    pressTiltX.set(-py * maxTilt);
+  };
+
+  const resetCardPress = () => {
+    pressTiltX.set(0);
+    pressTiltY.set(0);
+  };
 
   const published = recipes.filter((r) => r.status === "published");
   const featured = published.filter((r) => r.featured).slice(0, 6);
@@ -105,8 +134,14 @@ export function HomePage() {
                 initial={{ opacity: 0, y: 48 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                style={{ rotateX, rotateY, y: cardTranslateY, transformStyle: "preserve-3d" }}
-                className="relative will-change-transform ml-[14%] sm:ml-[22%] md:ml-[14%] lg:ml-[16%]"
+                style={{ rotateX: combinedRotateX, rotateY: combinedRotateY, y: cardTranslateY, transformStyle: "preserve-3d" }}
+                whileTap={{ scale: 0.97 }}
+                onPointerDown={handleCardPress}
+                onPointerMove={handleCardPress}
+                onPointerUp={resetCardPress}
+                onPointerLeave={resetCardPress}
+                onPointerCancel={resetCardPress}
+                className="relative will-change-transform ml-[14%] sm:ml-[22%] md:ml-[14%] lg:ml-[16%] touch-none cursor-pointer"
               >
                 {/* Main screenshot card */}
                 <div className="relative rounded-[1.75rem] overflow-hidden ring-1 ring-black/10 bg-card aspect-[4/3] w-full"
@@ -117,7 +152,7 @@ export function HomePage() {
                     alt="A spread of grilled meats, dips, and mezze dishes"
                     className="w-full h-full object-cover block"
                   />
-                  {/* Gloss sheen that reinforces the 3D angle */}
+                  {/* Gloss sheen — brightens toward the pressed corner for tactile feedback */}
                   <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/12 via-transparent to-black/10" />
                 </div>
               </motion.div>
@@ -139,7 +174,7 @@ export function HomePage() {
               initial={{ opacity: 0, y: -14, scale: 0.9 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute top-0 left-2 sm:left-1 flex items-center gap-2 rounded-full bg-primary text-primary-foreground shadow-xl px-3.5 py-2"
+              className="absolute bottom-1 left-0 sm:bottom-auto sm:top-0 sm:left-1 flex items-center gap-2 rounded-full bg-primary text-primary-foreground shadow-xl px-3.5 py-2"
             >
               <ChefHat className="size-4" />
               <span className="text-sm" style={{ fontWeight: 500 }}>Real home cooks</span>
