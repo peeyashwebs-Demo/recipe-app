@@ -79,10 +79,10 @@ export function CollectionsPage() {
           {collections.map((c) => {
             const cover = store.recipes.find((r) => r.id === c.recipeIds[0]);
             return (
-              <div key={c.id} className="rounded-2xl border border-border bg-card overflow-hidden">
-                <div className="relative h-32 bg-muted">
+              <div key={c.id} className="group rounded-2xl border border-border bg-card overflow-hidden transition-all duration-300 hover:shadow-[0_18px_50px_-20px_rgba(74,60,48,0.45)] hover:-translate-y-1 hover:border-primary/30">
+                <div className="relative h-32 bg-muted overflow-hidden">
                   {cover ? (
-                    <ImageWithFallback src={img(cover.image, 500, 260)} alt={c.name} className="h-full w-full object-cover" />
+                    <ImageWithFallback src={img(cover.image, 500, 260)} alt={c.name} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.06]" />
                   ) : <div className="h-full grid place-items-center text-4xl">{c.emoji}</div>}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                   <div className="absolute bottom-3 left-4 text-white flex items-center gap-2">

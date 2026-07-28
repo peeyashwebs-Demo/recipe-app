@@ -17,6 +17,8 @@ export function FeedbackButton() {
       await api("/feedback", { method: "POST", body: { rating, message: text }, auth: true });
     } catch (e) {
       console.error("Feedback submit failed:", (e as Error).message);
+      toast.error("Couldn't send that — try again in a moment.");
+      return;
     }
     toast.success("Thank you for the feedback!", {
       description: "The Larder team reads every note.",

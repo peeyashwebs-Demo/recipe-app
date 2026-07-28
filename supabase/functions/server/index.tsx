@@ -236,6 +236,28 @@ app.get(`${P}/me`, async (c) => {
   return c.json({ profile, saved, collections, ...extra });
 });
 
+// Update current user's profile (name and/or avatar) — this is what
+// actually persists changes made in "Change photo" / profile editing,
+// so they show up everywhere the profile is read (header, reviews, etc.)
+app.patch(`${P}/profile`, async (c) => {
+  const user = await getUser(c);
+  if (!user) return c.json({ error: "Unauthorized" }, 401);
+  const body = await c.req.json().catch(() => ({}));
+  const { name, avatar } = body as { name?: string; avatar?: string };
+  const existing = await getProfile(user.id) ?? {
+    id: user.id, name: user.email?.split("@")[0] ?? "Cook", email: user.email,
+    avatar: `https://i.pravatar.cc/160?u=${encodeURIComponent(user.email ?? user.id)}`,
+    role: isAdminEmail(user.email) ? "admin" : "user",
+  };
+  const updated = {
+    ...existing,
+    ...(typeof name === "string" && name.trim() ? { name: name.trim() } : {}),
+    ...(typeof avatar === "string" && avatar ? { avatar } : {}),
+  };
+  await kv.set(`profile:${user.id}`, updated);
+  return c.json({ profile: updated });
+});
+
 // Toggle save
 app.post(`${P}/saved/:recipeId`, async (c) => {
   const user = await getUser(c);

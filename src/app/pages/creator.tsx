@@ -201,7 +201,7 @@ export function CreatorPage() {
           ) : (
             <div className="space-y-3">
               {mine.map((r) => (
-                <div key={r.id} className="flex items-center gap-4 rounded-2xl border border-border bg-card p-3">
+                <div key={r.id} className="flex items-center gap-4 rounded-2xl border border-border bg-card p-3 transition-colors hover:border-primary/30">
                   <ImageWithFallback src={img(r.image, 160, 160)} alt={r.title} className="size-16 rounded-xl object-cover shrink-0" />
                   <div className="min-w-0 flex-1">
                     <Link to={`/recipe/${r.id}`} className="font-display hover:text-primary transition-colors text-base" >{r.title}</Link>

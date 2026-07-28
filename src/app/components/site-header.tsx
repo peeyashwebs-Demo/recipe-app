@@ -22,26 +22,30 @@ const nav = [
 ];
 
 export function SiteHeader() {
-  const { currentUser, signOut } = useStore();
+  const { currentUser, signOut, updateProfile } = useStore();
   const { openAuth } = useAuthUI();
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [q, setQ] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [avatarOverride, setAvatarOverride] = useState<string | null>(() =>
-    localStorage.getItem("larder-avatar")
-  );
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = () => {
+    reader.onload = async () => {
       const dataUrl = reader.result as string;
-      localStorage.setItem("larder-avatar", dataUrl);
-      setAvatarOverride(dataUrl);
-      toast("Profile photo updated");
+      setUploadingAvatar(true);
+      try {
+        await updateProfile({ avatar: dataUrl });
+        toast("Profile photo updated");
+      } catch (err) {
+        toast.error((err as Error).message || "Couldn't update your photo. Try again.");
+      } finally {
+        setUploadingAvatar(false);
+      }
     };
     reader.readAsDataURL(file);
     e.target.value = "";
@@ -80,12 +84,23 @@ export function SiteHeader() {
               key={n.to}
               to={n.to}
               className={({ isActive }) =>
-                `text-sm px-3 py-2 rounded-full transition-colors ${
+                `relative text-sm px-3 py-2 rounded-full transition-colors ${
                   isActive ? "text-primary" : "text-foreground/75 hover:text-foreground"
                 }`
               }
             >
-              {n.label}
+              {({ isActive }) => (
+                <>
+                  {n.label}
+                  {isActive && (
+                    <motion.span
+                      layoutId="nav-active-pill"
+                      className="absolute inset-x-2 -bottom-0.5 h-0.5 rounded-full bg-primary"
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                </>
+              )}
             </NavLink>
           ))}
         </nav>
@@ -105,7 +120,7 @@ export function SiteHeader() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button className="flex items-center gap-2 rounded-full pl-1 pr-3 h-10 hover:bg-secondary transition-colors">
-                  <img src={avatarOverride ?? currentUser.avatar} alt={currentUser.name} className="size-8 rounded-full object-cover" />
+                  <img src={currentUser.avatar} alt={currentUser.name} className="size-8 rounded-full object-cover" />
                   <span className="hidden sm:block max-w-24 truncate text-sm" >{currentUser.name.split(" ")[0]}</span>
                 </button>
               </DropdownMenuTrigger>
@@ -115,8 +130,8 @@ export function SiteHeader() {
                   <span className="text-muted-foreground font-normal text-xs" >{currentUser.email}</span>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => fileInputRef.current?.click()}>
-                  <Camera className="size-4" /> Change photo
+                <DropdownMenuItem onClick={() => fileInputRef.current?.click()} disabled={uploadingAvatar}>
+                  <Camera className="size-4" /> {uploadingAvatar ? "Uploading…" : "Change photo"}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => navigate("/collections")}><BookMarked className="size-4" /> Saved & collections</DropdownMenuItem>

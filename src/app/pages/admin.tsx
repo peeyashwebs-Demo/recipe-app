@@ -70,7 +70,7 @@ export function AdminPage() {
 
       <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-3">
         {stats.map((s) => (
-          <div key={s.label} className="rounded-2xl border border-border bg-card p-4">
+          <div key={s.label} className="rounded-2xl border border-border bg-card p-4 transition-all duration-300 hover:border-primary/30 hover:shadow-md">
             <s.icon className="size-5 text-primary" />
             <div className="font-display mt-2 text-3xl" >{s.value}</div>
             <div className="text-muted-foreground text-xs" >{s.label}</div>
@@ -105,7 +105,7 @@ export function AdminPage() {
         {/* Featured */}
         <TabsContent value="feature" className="mt-5 grid gap-3 sm:grid-cols-2">
           {published.map((r) => (
-            <div key={r.id} className="flex items-center gap-3 rounded-2xl border border-border bg-card p-3">
+            <div key={r.id} className="flex items-center gap-3 rounded-2xl border border-border bg-card p-3 transition-colors hover:border-primary/30">
               <ImageWithFallback src={img(r.image, 120, 120)} alt={r.title} className="size-14 rounded-xl object-cover shrink-0" />
               <div className="min-w-0 flex-1">
                 <div className="font-display truncate text-base" >{r.title}</div>

@@ -185,7 +185,7 @@ export function HomePage() {
       </section>
 
       {/* ---- Categories ---- */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6">
+      <section id="browse-by-mood" className="mx-auto max-w-7xl px-4 sm:px-6 scroll-mt-24">
         <Reveal className="flex items-end justify-between mb-6">
           <div>
             <h2 className="font-display text-3xl" >Browse by mood</h2>

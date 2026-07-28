@@ -25,6 +25,7 @@ interface StoreValue {
   signIn: (email: string, password: string) => Promise<{ ok: boolean; error?: string }>;
   signUp: (name: string, email: string, password: string) => Promise<{ ok: boolean; error?: string }>;
   signOut: () => Promise<void>;
+  updateProfile: (updates: { name?: string; avatar?: string }) => Promise<void>;
 
   ratingFor: (recipeId: string) => RatingSummary;
   userById: (id: string) => User | undefined;
@@ -132,6 +133,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     await refresh();
   }, [refresh]);
 
+  const updateProfile = useCallback(async (updates: { name?: string; avatar?: string }) => {
+    await api("/profile", { method: "PATCH", body: updates, auth: true });
+    // Refresh both: /me for the header/account menu, and the public
+    // bootstrap list so the new name/avatar shows up on past reviews
+    // and anywhere else other users see this profile.
+    await Promise.all([refresh(), refreshMe()]);
+  }, [refresh, refreshMe]);
+
   // ---- derived ----
   const ratingMap = useMemo(() => {
     const m: Record<string, RatingSummary> = {};
@@ -207,7 +216,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   const value: StoreValue = {
     recipes, reviews, profiles, collections, currentUser, savedIds, ready,
-    signIn, signUp, signOut,
+    signIn, signUp, signOut, updateProfile,
     ratingFor, userById, reviewsFor,
     toggleSave, isSaved, createCollection, addToCollection, myCollections,
     addReview, toggleReviewHidden,
@@ -220,7 +229,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 const noop = async () => {};
 const fallbackStore: StoreValue = {
   recipes: [], reviews: [], profiles: [], collections: [], currentUser: null, savedIds: [], ready: false,
-  signIn: async () => ({ ok: false }), signUp: async () => ({ ok: false }), signOut: noop,
+  signIn: async () => ({ ok: false }), signUp: async () => ({ ok: false }), signOut: noop, updateProfile: noop,
   ratingFor: () => ({ average: 0, count: 0 }),
   userById: () => undefined,
   reviewsFor: () => [],
